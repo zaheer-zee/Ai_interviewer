@@ -1,21 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import { ReactNode } from "react";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "AI Interview Coach",
-  description: "Real-time Voice AI Interview simulator",
+  title: "AI Interview & Communication Coach",
+  description: "Highly configurable real-time Voice AI Interview simulator and English Communication Coach powered by Gemini 1.5",
 };
 
 export default function RootLayout({
@@ -26,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans min-h-full flex flex-col antialiased`}
+        className={`${inter.variable} font-sans min-h-full flex flex-col antialiased`}
       >
         {children}
       </body>

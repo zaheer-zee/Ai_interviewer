@@ -20,6 +20,7 @@ app.add_middleware(
 class TokenRequest(BaseModel):
     participant_name: str
     room_name: str
+    config: dict = {}
 
 @app.get("/")
 def read_root():
@@ -34,10 +35,16 @@ async def create_token(req: TokenRequest):
     if not api_key or not api_secret or not livekit_url:
         raise HTTPException(status_code=500, detail="LiveKit credentials not configured")
         
-    # Explicitly tell LiveKit to send the agent into this room
+    import json
+    # Explicitly tell LiveKit to send the agent into this room, and pass config as metadata
     try:
         lkapi = api.LiveKitAPI(livekit_url, api_key, api_secret)
-        await lkapi.room.create_room(api.CreateRoomRequest(name=req.room_name))
+        await lkapi.room.create_room(
+            api.CreateRoomRequest(
+                name=req.room_name,
+                metadata=json.dumps(req.config)
+            )
+        )
         await lkapi.agent_dispatch.create_dispatch(
             api.CreateAgentDispatchRequest(
                 agent_name="interviewer",
